@@ -10,11 +10,11 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HomeScreen } from '../features/home/presentation/screens/HomeScreen';
 import { HistoryScreen } from '../features/history/presentation/screens/HistoryScreen';
+import { HomeScreen } from '../features/home/presentation/screens/HomeScreen';
 import { NewScreen } from '../features/new/presentation/screens/NewScreen';
-import { RoutinesScreen } from '../features/routines/presentation/screens/RoutinesScreen';
 import { ProfileScreen } from '../features/profile/presentation/screens/ProfileScreen';
+import { RoutinesScreen } from '../features/routines/presentation/screens/RoutinesScreen';
 import { TabParamList } from './types';
 
 const Tab = createBottomTabNavigator<TabParamList>();
