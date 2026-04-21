@@ -151,13 +151,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#8F8F8F',
     letterSpacing: 0.3,
-    marginBottom: -26,
+    marginBottom: 12,
   },
   routineInput: {
     fontSize: 24,
     fontWeight: '700',
     color: '#121212',
-    lineHeight: 56,
+    lineHeight: 0,
     paddingVertical: 0,
   },
   structureRow: {
