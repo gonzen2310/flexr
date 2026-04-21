@@ -19,6 +19,7 @@ import { TabParamList } from './types';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const BAR_BG_COLOR     = '#FFFFFF';
+const BORDER_WIDTH      = 0.2;
 const BAR_BORDER_COLOR = '#606060';
 const ACTIVE_COLOR     = '#F1E5D1'; // cream pill behind focused non-center tab
 const CENTER_COLOR     = '#8FA968'; // muted olive for center tab
@@ -27,7 +28,9 @@ const CENTER_ICON      = '#FFFFFF'; // icon inside the olive circle
 const INACTIVE_ICON    = '#2A2A2A'; // default icon on white bar
 const BAR_HEIGHT       = 70;
 const CIRCLE_SIZE      = 46;
+const ICON_SIZE        = 22;
 const CENTER_ROUTE     = 'New';
+
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -78,7 +81,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
               >
                 <Ionicons
                   name={lit ? icons.active : icons.inactive}
-                  size={22}
+                  size={ICON_SIZE}
                   color={isCenter ? CENTER_ICON : isFocused ? ACTIVE_ICON : INACTIVE_ICON}
                 />
               </View>
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     height: BAR_HEIGHT,
     borderRadius: 29,
     backgroundColor: BAR_BG_COLOR,
-    borderWidth: 0.2,
+    borderWidth: BORDER_WIDTH,
     borderColor: BAR_BORDER_COLOR,
     flexDirection: 'row',
     alignItems: 'center',
