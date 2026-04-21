@@ -27,8 +27,8 @@ export function NewScreen() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.sectionLabel}>ROUTINE NAME</Text>
-        <View style={styles.card}>
+        <View style={styles.routineCard}>
+          <Text style={styles.routineCardLabel}>ROUTINE NAME</Text>
           <TextInput
             defaultValue="Quick abs"
             placeholder="Routine name"
@@ -142,11 +142,27 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     marginBottom: 22,
   },
+  routineCard: {
+    backgroundColor: '#E7E7E7',
+    borderRadius: 26,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 24,
+    marginBottom: 24,
+  },
+  routineCardLabel: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#8F8F8F',
+    letterSpacing: 0.3,
+    marginBottom: -26,
+  },
   routineInput: {
-    fontSize: 43,
+    fontSize: 24,
     fontWeight: '700',
-    color: '#171717',
-    paddingVertical: 6,
+    color: '#121212',
+    lineHeight: 56,
+    paddingVertical: 0,
   },
   structureRow: {
     flexDirection: 'row',
