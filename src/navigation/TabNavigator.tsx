@@ -19,7 +19,7 @@ import { TabParamList } from './types';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const BAR_BG_COLOR     = '#FFFFFF';
-const BORDER_WIDTH     = 0.2;
+const BORDER_WIDTH     = 0.4;
 const BAR_BORDER_COLOR = '#606060';
 const ACTIVE_COLOR     = '#F1E5D1'; // cream pill behind focused non-center tab
 const FAB_COLOR        = '#8FA968'; // muted olive for FAB
@@ -29,11 +29,11 @@ const ACTIVE_ICON      = '#3E2D14'; // dark brown icon on cream pill
 const FAB_ICON         = '#FFFFFF'; // icon inside the FAB
 const INACTIVE_ICON    = '#2A2A2A'; // default icon on white bar
 const BAR_HEIGHT       = 70;
-const CIRCLE_SIZE      = 46;
-const FAB_SIZE         = 58;
-const FAB_LIFT         = 18; // how far the FAB sits above the bar's top edge
-const ICON_SIZE        = 22;
-const FAB_ICON_SIZE    = 26;
+const CIRCLE_SIZE      = 52;
+const FAB_SIZE         = 60;
+const FAB_LIFT         = 65; // half of FAB_SIZE keeps the middle button centered on the bar edge
+const ICON_SIZE        = 28;
+const FAB_ICON_SIZE    = 32;
 const CENTER_ROUTE     = 'New';
 
 const FAB_LABELS = ['New', 'Add', 'Create', 'Start', 'Track'];
