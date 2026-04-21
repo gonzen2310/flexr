@@ -19,18 +19,22 @@ import { TabParamList } from './types';
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const BAR_BG_COLOR     = '#FFFFFF';
-const BORDER_WIDTH      = 0.2;
+const BORDER_WIDTH     = 0.2;
 const BAR_BORDER_COLOR = '#606060';
 const ACTIVE_COLOR     = '#F1E5D1'; // cream pill behind focused non-center tab
-const CENTER_COLOR     = '#8FA968'; // muted olive for center tab
+const FAB_COLOR        = '#8FA968'; // muted olive for FAB
 const ACTIVE_ICON      = '#3E2D14'; // dark brown icon on cream pill
-const CENTER_ICON      = '#FFFFFF'; // icon inside the olive circle
+const FAB_ICON         = '#FFFFFF'; // icon inside the FAB
 const INACTIVE_ICON    = '#2A2A2A'; // default icon on white bar
 const BAR_HEIGHT       = 70;
 const CIRCLE_SIZE      = 46;
+const FAB_SIZE         = 58;
+const FAB_LIFT         = 18; // how far the FAB sits above the bar's top edge
 const ICON_SIZE        = 22;
+const FAB_ICON_SIZE    = 26;
 const CENTER_ROUTE     = 'New';
 
+const FAB_LABELS = ['New', 'Add', 'Create', 'Start', 'Track'];
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -56,13 +60,29 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
     }
   };
 
+  const centerIndex = state.routes.findIndex((r) => r.name === CENTER_ROUTE);
+  const centerRoute = centerIndex >= 0 ? state.routes[centerIndex] : undefined;
+
+  const handleFabPress = () => {
+    // TODO: replace with navigation to a dedicated creation page.
+    const currentRoute = state.routes[state.index];
+    const currentLabel =
+      (currentRoute?.name === CENTER_ROUTE &&
+        (currentRoute.params as { label?: string } | undefined)?.label) ||
+      FAB_LABELS[0];
+    const nextIndex = (FAB_LABELS.indexOf(currentLabel) + 1) % FAB_LABELS.length;
+    navigation.navigate(CENTER_ROUTE, { label: FAB_LABELS[nextIndex] });
+  };
+
   return (
     <View style={[styles.barWrapper, { paddingBottom: insets.bottom }]}>
       <View style={styles.bar}>
         {state.routes.map((route, index) => {
+          if (route.name === CENTER_ROUTE) {
+            return <View key={route.key} style={styles.tab} />;
+          }
+
           const isFocused = state.index === index;
-          const isCenter = route.name === CENTER_ROUTE;
-          const lit = isFocused || isCenter;
           const icons = TAB_ICONS[route.name];
 
           return (
@@ -72,23 +92,33 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
               style={styles.tab}
               onPress={() => navigate(route.name, route.key, index)}
             >
-              <View
-                style={[
-                  styles.circle,
-                  isCenter && styles.centerCircle,
-                  isFocused && !isCenter && styles.activeCircle,
-                ]}
-              >
+              <View style={[styles.circle, isFocused && styles.activeCircle]}>
                 <Ionicons
-                  name={lit ? icons.active : icons.inactive}
+                  name={isFocused ? icons.active : icons.inactive}
                   size={ICON_SIZE}
-                  color={isCenter ? CENTER_ICON : isFocused ? ACTIVE_ICON : INACTIVE_ICON}
+                  color={isFocused ? ACTIVE_ICON : INACTIVE_ICON}
                 />
               </View>
             </TouchableOpacity>
           );
         })}
       </View>
+
+      {centerRoute && (
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Create"
+          activeOpacity={0.85}
+          onPress={handleFabPress}
+          style={[styles.fab, { bottom: insets.bottom + BAR_HEIGHT - FAB_LIFT }]}
+        >
+          <Ionicons
+            name={TAB_ICONS[CENTER_ROUTE].active}
+            size={FAB_ICON_SIZE}
+            color={FAB_ICON}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -149,10 +179,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  centerCircle: {
-    backgroundColor: CENTER_COLOR,
-  },
   activeCircle: {
     backgroundColor: ACTIVE_COLOR,
+  },
+  fab: {
+    position: 'absolute',
+    alignSelf: 'center',
+    width: FAB_SIZE,
+    height: FAB_SIZE,
+    borderRadius: FAB_SIZE / 2,
+    backgroundColor: FAB_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+      },
+      android: { elevation: 16 },
+    }),
   },
 });
