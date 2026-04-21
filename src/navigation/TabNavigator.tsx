@@ -41,10 +41,10 @@ const FAB_LABELS = ['New', 'Add', 'Create', 'Start', 'Track'];
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 const TAB_ICONS: Record<string, { active: IoniconName; inactive: IoniconName }> = {
-  History:  { active: 'notifications', inactive: 'notifications-outline' },
-  Home:     { active: 'happy',         inactive: 'happy-outline' },
+  Home:     { active: 'home',          inactive: 'home-outline' },
+  History:  { active: 'calendar',      inactive: 'calendar-outline' },
   New:      { active: 'apps',          inactive: 'apps-outline' },
-  Routines: { active: 'trending-up',   inactive: 'trending-up-outline' },
+  Routines: { active: 'star',          inactive: 'star-outline' },
   Profile:  { active: 'person',        inactive: 'person-outline' },
 };
 
@@ -141,8 +141,8 @@ export function TabNavigator() {
       screenOptions={{ headerShown: false }}
       initialRouteName="Home"
     >
-      <Tab.Screen name="History"  component={HistoryScreen} />
       <Tab.Screen name="Home"     component={HomeScreen} />
+      <Tab.Screen name="History"  component={HistoryScreen} />
       <Tab.Screen name="New"      component={NewScreen} />
       <Tab.Screen name="Routines" component={RoutinesScreen} />
       <Tab.Screen name="Profile"  component={ProfileScreen} />
