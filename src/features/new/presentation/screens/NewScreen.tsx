@@ -1,10 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import type { RouteProp } from '@react-navigation/native';
 
-export function NewScreen() {
+import type { TabParamList } from '../../../../navigation/types';
+
+type NewScreenRouteProp = RouteProp<TabParamList, 'New'>;
+
+type NewScreenProps = {
+  route: NewScreenRouteProp;
+};
+
+export function NewScreen({ route }: NewScreenProps) {
+  const label = route.params?.label ?? 'New';
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>New</Text>
+      <Text style={styles.label}>{label}</Text>
     </View>
   );
 }

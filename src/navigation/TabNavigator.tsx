@@ -5,8 +5,7 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -19,18 +18,34 @@ import { TabParamList } from './types';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
-const BAR_COLOR = '#111111';
-const ACCENT_COLOR = '#7C3AED';
-const HOME_SIZE = 72;
-const PILL_HEIGHT = 62;
+const BAR_BG_COLOR     = '#FFFFFF';
+const BORDER_WIDTH     = 0.2;
+const BAR_BORDER_COLOR = '#606060';
+const ACTIVE_COLOR     = '#F1E5D1'; // cream pill behind focused non-center tab
+const FAB_COLOR        = '#8FA968'; // muted olive for FAB
+const FAB_COLOR_FOCUSED = '#6E8A4A'; // darker olive when the New screen is focused
+const FAB_RING_COLOR   = '#3E2D14'; // ring around the FAB when focused
+const ACTIVE_ICON      = '#3E2D14'; // dark brown icon on cream pill
+const FAB_ICON         = '#FFFFFF'; // icon inside the FAB
+const INACTIVE_ICON    = '#2A2A2A'; // default icon on white bar
+const BAR_HEIGHT       = 70;
+const CIRCLE_SIZE      = 46;
+const FAB_SIZE         = 58;
+const FAB_LIFT         = 18; // how far the FAB sits above the bar's top edge
+const ICON_SIZE        = 22;
+const FAB_ICON_SIZE    = 26;
+const CENTER_ROUTE     = 'New';
+
+const FAB_LABELS = ['New', 'Add', 'Create', 'Start', 'Track'];
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 const TAB_ICONS: Record<string, { active: IoniconName; inactive: IoniconName }> = {
-  History:  { active: 'pie-chart',    inactive: 'pie-chart-outline' },
-  New:      { active: 'add',          inactive: 'add' },
-  Routines: { active: 'trending-up',  inactive: 'trending-up-outline' },
-  Profile:  { active: 'person',       inactive: 'person-outline' },
+  History:  { active: 'notifications', inactive: 'notifications-outline' },
+  Home:     { active: 'happy',         inactive: 'happy-outline' },
+  New:      { active: 'apps',          inactive: 'apps-outline' },
+  Routines: { active: 'trending-up',   inactive: 'trending-up-outline' },
+  Profile:  { active: 'person',        inactive: 'person-outline' },
 };
 
 function CustomTabBar({ state, navigation }: BottomTabBarProps) {
@@ -47,113 +62,120 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
     }
   };
 
-  const homeRoute = state.routes[0];
-  const isHomeFocused = state.index === 0;
+  const centerIndex = state.routes.findIndex((r) => r.name === CENTER_ROUTE);
+  const centerRoute = centerIndex >= 0 ? state.routes[centerIndex] : undefined;
+
+  const handleFabPress = () => {
+    // TODO: replace with navigation to a dedicated creation page.
+    const currentRoute = state.routes[state.index];
+    const currentLabel =
+      (currentRoute?.name === CENTER_ROUTE &&
+        (currentRoute.params as { label?: string } | undefined)?.label) ||
+      FAB_LABELS[0];
+    const nextIndex = (FAB_LABELS.indexOf(currentLabel) + 1) % FAB_LABELS.length;
+    navigation.navigate(CENTER_ROUTE, { label: FAB_LABELS[nextIndex] });
+  };
 
   return (
-    <View style={[styles.wrapper, { paddingBottom: insets.bottom + 12 }]}>
-      <View style={styles.barRow}>
-        {/* Home — standalone circle that overlaps the pill */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.homeCircle}
-          onPress={() => navigate(homeRoute.name, homeRoute.key, 0)}
-        >
-          <View style={[styles.homeIconRing, isHomeFocused && styles.homeIconRingActive]}>
-            <Ionicons
-              name={isHomeFocused ? 'home' : 'home-outline'}
-              size={22}
-              color={isHomeFocused ? BAR_COLOR : 'rgba(255,255,255,0.6)'}
-            />
-          </View>
-        </TouchableOpacity>
+    <View style={[styles.barWrapper, { paddingBottom: insets.bottom }]}>
+      <View style={styles.bar}>
+        {state.routes.map((route, index) => {
+          if (route.name === CENTER_ROUTE) {
+            return <View key={route.key} style={styles.tab} />;
+          }
 
-        {/* Pill — contains the remaining 4 tabs */}
-        <View style={styles.pill}>
-          {state.routes.slice(1).map((route, i) => {
-            const tabIndex = i + 1;
-            const isFocused = state.index === tabIndex;
-            const isNew = route.name === 'New';
-            const icons = TAB_ICONS[route.name];
+          const isFocused = state.index === index;
+          const icons = TAB_ICONS[route.name];
 
-            return (
-              <TouchableOpacity
-                key={route.key}
-                activeOpacity={0.8}
-                style={styles.tab}
-                onPress={() => navigate(route.name, route.key, tabIndex)}
-              >
-                {isNew ? (
-                  <View style={[styles.newBubble, isFocused && styles.newBubbleFocused]}>
-                    <Ionicons name={icons.active} size={26} color="#fff" />
-                  </View>
-                ) : (
-                  <Ionicons
-                    name={isFocused ? icons.active : icons.inactive}
-                    size={22}
-                    color={isFocused ? '#fff' : 'rgba(255,255,255,0.45)'}
-                  />
-                )}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+          return (
+            <TouchableOpacity
+              key={route.key}
+              activeOpacity={0.8}
+              style={styles.tab}
+              onPress={() => navigate(route.name, route.key, index)}
+            >
+              <View style={[styles.circle, isFocused && styles.activeCircle]}>
+                <Ionicons
+                  name={isFocused ? icons.active : icons.inactive}
+                  size={ICON_SIZE}
+                  color={isFocused ? ACTIVE_ICON : INACTIVE_ICON}
+                />
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
+
+      {centerRoute && (() => {
+        const isFabFocused = state.index === centerIndex;
+        const centerIcons = TAB_ICONS[CENTER_ROUTE];
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Create"
+            accessibilityState={{ selected: isFabFocused }}
+            activeOpacity={0.85}
+            onPress={handleFabPress}
+            style={[
+              styles.fab,
+              isFabFocused && styles.fabFocused,
+              { bottom: insets.bottom + BAR_HEIGHT - FAB_LIFT },
+            ]}
+          >
+            <Ionicons
+              name={isFabFocused ? centerIcons.active : centerIcons.inactive}
+              size={FAB_ICON_SIZE}
+              color={FAB_ICON}
+            />
+          </TouchableOpacity>
+        );
+      })()}
     </View>
   );
 }
 
+export function TabNavigator() {
+  return (
+    <Tab.Navigator
+      tabBar={(props: BottomTabBarProps) => <CustomTabBar {...props} />}
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Home"
+    >
+      <Tab.Screen name="History"  component={HistoryScreen} />
+      <Tab.Screen name="Home"     component={HomeScreen} />
+      <Tab.Screen name="New"      component={NewScreen} />
+      <Tab.Screen name="Routines" component={RoutinesScreen} />
+      <Tab.Screen name="Profile"  component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
-  wrapper: {
+  barWrapper: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
-  barRow: {
+  bar: {
+    height: BAR_HEIGHT,
+    borderRadius: 29,
+    backgroundColor: BAR_BG_COLOR,
+    borderWidth: BORDER_WIDTH,
+    borderColor: BAR_BORDER_COLOR,
     flexDirection: 'row',
     alignItems: 'center',
-    // shadow
+    paddingHorizontal: 8,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.25,
-        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
       },
       android: { elevation: 12 },
     }),
-  },
-  homeCircle: {
-    width: HOME_SIZE,
-    height: HOME_SIZE,
-    borderRadius: HOME_SIZE / 2,
-    backgroundColor: BAR_COLOR,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 2,
-    marginRight: -14,
-  },
-  homeIconRing: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  homeIconRingActive: {
-    backgroundColor: '#fff',
-  },
-  pill: {
-    flex: 1,
-    height: PILL_HEIGHT,
-    borderRadius: PILL_HEIGHT / 2,
-    backgroundColor: BAR_COLOR,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 18,
-    paddingRight: 6,
   },
   tab: {
     flex: 1,
@@ -161,30 +183,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
   },
-  newBubble: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(124, 58, 237, 0.6)',
+  circle: {
+    width: CIRCLE_SIZE,
+    height: CIRCLE_SIZE,
+    borderRadius: CIRCLE_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  newBubbleFocused: {
-    backgroundColor: ACCENT_COLOR,
+  activeCircle: {
+    backgroundColor: ACTIVE_COLOR,
+  },
+  fab: {
+    position: 'absolute',
+    alignSelf: 'center',
+    width: FAB_SIZE,
+    height: FAB_SIZE,
+    borderRadius: FAB_SIZE / 2,
+    backgroundColor: FAB_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+      },
+      android: { elevation: 16 },
+    }),
+  },
+  fabFocused: {
+    backgroundColor: FAB_COLOR_FOCUSED,
+    borderWidth: 2,
+    borderColor: FAB_RING_COLOR,
   },
 });
-
-export function TabNavigator() {
-  return (
-    <Tab.Navigator
-      tabBar={(props) => <CustomTabBar {...props} />}
-      screenOptions={{ headerShown: false }}
-    >
-      <Tab.Screen name="Home"     component={HomeScreen} />
-      <Tab.Screen name="History"  component={HistoryScreen} />
-      <Tab.Screen name="New"      component={NewScreen} />
-      <Tab.Screen name="Routines" component={RoutinesScreen} />
-      <Tab.Screen name="Profile"  component={ProfileScreen} />
-    </Tab.Navigator>
-  );
-}
