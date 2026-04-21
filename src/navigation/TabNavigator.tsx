@@ -36,8 +36,6 @@ const ICON_SIZE        = 28;
 const FAB_ICON_SIZE    = 32;
 const CENTER_ROUTE     = 'New';
 
-const FAB_LABELS = ['New', 'Add', 'Create', 'Start', 'Track'];
-
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 const TAB_ICONS: Record<string, { active: IoniconName; inactive: IoniconName }> = {
@@ -66,14 +64,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   const centerRoute = centerIndex >= 0 ? state.routes[centerIndex] : undefined;
 
   const handleFabPress = () => {
-    // TODO: replace with navigation to a dedicated creation page.
-    const currentRoute = state.routes[state.index];
-    const currentLabel =
-      (currentRoute?.name === CENTER_ROUTE &&
-        (currentRoute.params as { label?: string } | undefined)?.label) ||
-      FAB_LABELS[0];
-    const nextIndex = (FAB_LABELS.indexOf(currentLabel) + 1) % FAB_LABELS.length;
-    navigation.navigate(CENTER_ROUTE, { label: FAB_LABELS[nextIndex] });
+    navigation.navigate(CENTER_ROUTE);
   };
 
   return (

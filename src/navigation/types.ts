@@ -1,7 +1,7 @@
 export type TabParamList = {
   Home: undefined;
   History: undefined;
-  New: { label?: string } | undefined;
+  New: undefined;
   Routines: undefined;
   Profile: undefined;
 };
