@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-const HEADER_ACTION_SIZE = 28;
+const HEADER_ACTION_SIZE = 32;
 
 
 export function NewScreen() {
@@ -94,13 +94,13 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 20,
-    paddingTop: 14,
+    paddingTop: 24,
     paddingBottom: 160,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 22,
+    marginBottom: 32,
   },
   headerBackButton: {
     width: 90,
@@ -108,14 +108,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  headerAction: {
-    fontSize: 16,
-    color: '#222',
-  },
   headerTitle: {
     flex: 1,
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     color: '#171717',
   },
@@ -124,15 +120,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   headerSave: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
     color: '#7363FF',
   },
   sectionLabel: {
-    fontSize: 29,
+    fontSize: 18,
     fontWeight: '700',
     color: '#9A9A9A',
-    marginBottom: 10,
+    marginBottom: 16,
     letterSpacing: 0.2,
   },
   card: {
@@ -148,7 +144,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 24,
-    marginBottom: 24,
+    marginBottom: 32,
   },
   routineCardLabel: {
     fontSize: 13,
@@ -171,20 +167,20 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   structureLabel: {
-    fontSize: 36,
+    fontSize: 18,
     color: '#212121',
   },
   structureValueWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: 16,
   },
   operator: {
     fontSize: 36,
     color: '#232323',
   },
   structureValue: {
-    fontSize: 36,
+    fontSize: 24,
     fontWeight: '700',
     color: '#161616',
     minWidth: 50,
@@ -200,7 +196,7 @@ const styles = StyleSheet.create({
   },
   plusText: {
     color: '#FFF',
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: '700',
     marginTop: -2,
   },
@@ -211,7 +207,7 @@ const styles = StyleSheet.create({
   exerciseArtWrap: {
     borderWidth: 2,
     borderColor: '#2692E8',
-    marginBottom: 20,
+    marginBottom: 48,
   },
   exerciseArt: {
     backgroundColor: '#F0F0F0',
@@ -232,11 +228,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 64,
-    marginBottom: 12,
+    marginBottom: 24,
     backgroundColor: '#F8F8F8',
   },
   addBtnText: {
-    fontSize: 34,
+    fontSize: 18,
     color: '#1E1E1E',
   },
   startBtn: {
@@ -245,10 +241,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 64,
-    marginBottom: 8,
+    marginBottom: 24,
   },
   startBtnText: {
-    fontSize: 31,
+    fontSize: 18,
     color: '#FFF',
     fontWeight: '500',
   },
@@ -260,7 +256,7 @@ const styles = StyleSheet.create({
     height: 64,
   },
   saveRoutineBtnText: {
-    fontSize: 31,
+    fontSize: 18,
     color: '#FFF',
     fontWeight: '500',
   },
