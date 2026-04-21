@@ -23,6 +23,8 @@ const BORDER_WIDTH     = 0.2;
 const BAR_BORDER_COLOR = '#606060';
 const ACTIVE_COLOR     = '#F1E5D1'; // cream pill behind focused non-center tab
 const FAB_COLOR        = '#8FA968'; // muted olive for FAB
+const FAB_COLOR_FOCUSED = '#6E8A4A'; // darker olive when the New screen is focused
+const FAB_RING_COLOR   = '#3E2D14'; // ring around the FAB when focused
 const ACTIVE_ICON      = '#3E2D14'; // dark brown icon on cream pill
 const FAB_ICON         = '#FFFFFF'; // icon inside the FAB
 const INACTIVE_ICON    = '#2A2A2A'; // default icon on white bar
@@ -104,21 +106,30 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
         })}
       </View>
 
-      {centerRoute && (
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Create"
-          activeOpacity={0.85}
-          onPress={handleFabPress}
-          style={[styles.fab, { bottom: insets.bottom + BAR_HEIGHT - FAB_LIFT }]}
-        >
-          <Ionicons
-            name={TAB_ICONS[CENTER_ROUTE].active}
-            size={FAB_ICON_SIZE}
-            color={FAB_ICON}
-          />
-        </TouchableOpacity>
-      )}
+      {centerRoute && (() => {
+        const isFabFocused = state.index === centerIndex;
+        const centerIcons = TAB_ICONS[CENTER_ROUTE];
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Create"
+            accessibilityState={{ selected: isFabFocused }}
+            activeOpacity={0.85}
+            onPress={handleFabPress}
+            style={[
+              styles.fab,
+              isFabFocused && styles.fabFocused,
+              { bottom: insets.bottom + BAR_HEIGHT - FAB_LIFT },
+            ]}
+          >
+            <Ionicons
+              name={isFabFocused ? centerIcons.active : centerIcons.inactive}
+              size={FAB_ICON_SIZE}
+              color={FAB_ICON}
+            />
+          </TouchableOpacity>
+        );
+      })()}
     </View>
   );
 }
@@ -200,5 +211,10 @@ const styles = StyleSheet.create({
       },
       android: { elevation: 16 },
     }),
+  },
+  fabFocused: {
+    backgroundColor: FAB_COLOR_FOCUSED,
+    borderWidth: 2,
+    borderColor: FAB_RING_COLOR,
   },
 });
