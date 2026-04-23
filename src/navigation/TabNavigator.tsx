@@ -24,7 +24,6 @@ const BAR_BORDER_COLOR = '#606060';
 const ACTIVE_COLOR     = '#F1E5D1'; // cream pill behind focused non-center tab
 const FAB_COLOR        = '#8FA968'; // muted olive for FAB
 const FAB_COLOR_FOCUSED = '#6E8A4A'; // darker olive when the New screen is focused
-const FAB_RING_COLOR   = '#3E2D14'; // ring around the FAB when focused
 const ACTIVE_ICON      = '#3E2D14'; // dark brown icon on cream pill
 const FAB_ICON         = '#FFFFFF'; // icon inside the FAB
 const INACTIVE_ICON    = '#2A2A2A'; // default icon on white bar
@@ -41,10 +40,10 @@ const FAB_LABELS = ['New', 'Add', 'Create', 'Start', 'Track'];
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 const TAB_ICONS: Record<string, { active: IoniconName; inactive: IoniconName }> = {
-  History:  { active: 'notifications', inactive: 'notifications-outline' },
-  Home:     { active: 'happy',         inactive: 'happy-outline' },
-  New:      { active: 'apps',          inactive: 'apps-outline' },
-  Routines: { active: 'trending-up',   inactive: 'trending-up-outline' },
+  Home:     { active: 'home',          inactive: 'home-outline' },
+  History:  { active: 'calendar',      inactive: 'calendar-outline' },
+  New:      { active: 'barbell',       inactive: 'barbell-outline' },
+  Routines: { active: 'star',          inactive: 'star-outline' },
   Profile:  { active: 'person',        inactive: 'person-outline' },
 };
 
@@ -141,8 +140,8 @@ export function TabNavigator() {
       screenOptions={{ headerShown: false }}
       initialRouteName="Home"
     >
-      <Tab.Screen name="History"  component={HistoryScreen} />
       <Tab.Screen name="Home"     component={HomeScreen} />
+      <Tab.Screen name="History"  component={HistoryScreen} />
       <Tab.Screen name="New"      component={NewScreen} />
       <Tab.Screen name="Routines" component={RoutinesScreen} />
       <Tab.Screen name="Profile"  component={ProfileScreen} />
@@ -214,7 +213,5 @@ const styles = StyleSheet.create({
   },
   fabFocused: {
     backgroundColor: FAB_COLOR_FOCUSED,
-    borderWidth: 2,
-    borderColor: FAB_RING_COLOR,
   },
 });
