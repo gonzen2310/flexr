@@ -213,6 +213,5 @@ const styles = StyleSheet.create({
   },
   fabFocused: {
     backgroundColor: FAB_COLOR_FOCUSED,
-    borderWidth: 2,
   },
 });
